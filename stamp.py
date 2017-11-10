@@ -1,5 +1,6 @@
+import numpy as np
 from stl import mesh
-
+from functools import reduce
 
 class Stamp:
     def __init__(self, front_design, back_design, mask, front_color, back_color, mask_color, front_raise = 16, back_raise = 4, center = 4):
@@ -15,11 +16,12 @@ class Stamp:
                     if front_design[ii][jj] == front_color:
                         l += front_raise
                     
-                    o = [dimx - ii, jj, -b]
+                    o = [ii, jj, b-l]
                     meshes.append(cube(origin = o, scale = [1, 1, l]))
-        self.mesh = join_meshes(stamp)
+        self.mesh = join_meshes(meshes)
 
-
+    def save(self, filename):
+        self.mesh.save(filename)
 
 
 

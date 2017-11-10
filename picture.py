@@ -1,3 +1,4 @@
+import numpy as np
 from PIL import Image
 import easygui
 
@@ -6,6 +7,8 @@ class Picture:
         if not path:
             path = easygui.fileopenbox()
         self.im = Image.open(path).convert("RGBA")
-        self.dim_x, self.dim_y = self.im.size
-        self.im_data = np.array(self.im).reshape(-1, 4)
+        self.dimy, self.dimx = self.im.size
+        self.im_data = np.array(self.im).reshape(self.dimx*self.dimy, -1)
         
+    def show(self):
+        self.im.show()
