@@ -1,13 +1,14 @@
+import numpy as np
 from stl import mesh
-
+from functools import reduce
 
 class Stamp:
     def __init__(self, front_design, back_design, mask, front_color, back_color, mask_color, front_raise = 16, back_raise = 4, center = 4):
-        dimx, dimy = reduce((lambda a, b : (min(a[0], b[0]),min(a[1], b[1]))), ((ar.dimx, ar.dimy) for ar in (front_design, back_design, mask)))
+        dimx, dimy = reduce((lambda a, b : (min(a[0], b[0]),min(a[1], b[1]))), ((ar.dimx, ar.dimy) for ar in (front_design, back_design, mask) if ar))
         meshes = []
         for ii in range(dimx):
             for jj in range(dimy):
-                if mask[ii][jj] == mask_color:
+                if not mask or mask[ii][jj] == mask_color:
                     b = 0
                     if back_design[ii][jj] == back_color:
                         b = back_raise   
@@ -15,11 +16,12 @@ class Stamp:
                     if front_design[ii][jj] == front_color:
                         l += front_raise
                     
-                    o = [dimx - ii, jj, -b]
+                    o = [ii, jj, b-l]
                     meshes.append(cube(origin = o, scale = [1, 1, l]))
-        self.mesh = join_meshes(stamp)
+        self.mesh = join_meshes(meshes)
 
-
+    def save(self, filename):
+        self.mesh.save(filename)
 
 
 
