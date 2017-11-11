@@ -10,7 +10,7 @@ class Stamp:
             for jj in range(dimy):
                 if not mask or mask[ii][jj] == mask_color:
                     b = 0
-                    if back_design[ii][jj] == back_color:
+                    if back_design and back_design[ii][jj] == back_color:
                         b = back_raise   
                     l = center + b
                     if front_design[ii][jj] == front_color:
