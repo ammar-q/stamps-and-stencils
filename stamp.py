@@ -3,18 +3,18 @@ from stl import mesh
 from functools import reduce
 
 class Stamp:
-    def __init__(self, front_design, back_design, mask, front_color, back_color, mask_color, front_raise = 16, back_raise = 4, center = 4):
+    def __init__(self, front_design, back_design, mask, front_color, front_raise = 16, back_raise = 4, center = 4):
         dimx, dimy = reduce((lambda a, b : (min(a[0], b[0]),min(a[1], b[1]))), ((ar.dimx, ar.dimy) for ar in (front_design, back_design, mask) if ar))
         meshes = []
         for ii in range(dimx):
             for jj in range(dimy):
-                if not mask or mask[ii][jj] == mask_color:
+                if not mask or mask[ii][jj][-1]:
                     b = 0
-                    if back_design and back_design[ii][jj] == back_color:
-                        b = back_raise   
+                    if back_design:
+                        b = back_raise * (back_design[ii][jj][-1]/255)   
                     l = center + b
                     if front_design[ii][jj] == front_color:
-                        l += front_raise
+                        l += front_raise * (front_design.base[ii][jj][-1]/255)   
                     
                     o = [ii, jj, b-l]
                     meshes.append(cube(origin = o, scale = [1, 1, l]))

@@ -12,11 +12,10 @@ class kPicture:
         self.dimx, self.dimy = self.base.dimx, self.base.dimy
 
         # Run k-means clustering
-        k_means_filter = KMeans(n_clusters=k, init='k-means++', n_init=5, max_iter=3000, tol=0.0001, precompute_distances='auto', verbose=0, random_state=None, copy_x=True, n_jobs=-1, algorithm='auto').fit(picture.im_data)
+        k_means_filter = KMeans(n_clusters=k, init='k-means++', n_init=5, max_iter=3000, tol=0.0001, precompute_distances='auto', verbose=0, random_state=None, copy_x=True, n_jobs=-1, algorithm='auto').fit(picture.im_data[:,[0,1,2]])
         
         self.colors =  k_means_filter.cluster_centers_
         self.im = np.array(k_means_filter.labels_).reshape(self.dimx, self.dimy)
-        self.im_data = np.array(self.im).reshape(-1, 1)
         
 
     def __getitem__(self, ii):
@@ -25,7 +24,10 @@ class kPicture:
     def show(self):
         image = Image.fromarray(self.colors[self.im].astype('uint8'), 'RGBA')
         image.show()
-        
+    
+    def im_data(self):
+        return np.array(self.im).reshape(self.dimx*self.dimy, -1)
+
 
 def index_opaque(colors):
     return reduce(lambda x,y: x if colors[x][3] > colors[y][3] else y, range(len(colors)))

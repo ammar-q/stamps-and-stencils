@@ -8,7 +8,12 @@ def add_border(kpicture, thickness, color = -1):
 class Stencil:
     def __init__():
     
-    def show():
+    def show(self):
+        
     
-    def apply():
     
+    def apply(self, picture, color, startx = 0, starty = 0):
+        for ii in range(self.dimx):
+            for jj in range(self.dimy):
+                if self.im[ii][jj] != self.mask_color:
+                    picture.im[startx + ii][starty + jj] = color

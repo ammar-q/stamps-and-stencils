@@ -6,9 +6,15 @@ class Picture:
     def __init__(self, path = ''):
         if not path:
             path = easygui.fileopenbox()
-        self.im = Image.open(path).convert("RGBA")
-        self.dimy, self.dimx = self.im.size
-        self.im_data = np.array(self.im).reshape(self.dimx*self.dimy, -1)
+        self.im = np.array(Image.open(path).convert("RGBA"))
+        self.dimx, self.dimy = self.im.shape[:2]
+    
+    def __getitem__(self, ii):
+        return self.im[ii,:]
         
     def show(self):
-        self.im.show()
+        image = Image.fromarray(self.im.astype('uint8'), 'RGBA')
+        image.show()
+    
+    def im_data(self):
+        return np.array(self.im).reshape(self.dimx*self.dimy, -1)
