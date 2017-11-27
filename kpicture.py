@@ -32,3 +32,11 @@ class kPicture:
 def index_opaque(colors):
     return reduce(lambda x,y: x if colors[x][3] > colors[y][3] else y, range(len(colors)))
 
+def add_border(kpicture, thickness, color = -1):
+    tmp = np.full((kpicture.dimx, thickness), color)
+    kpicture.im = np.hstack((tmp, kpicture.im, tmp))
+    tmp = np.full((thickness, kpicture.dimy + 2*thickness), color)
+    kpicture.im = np.vstack((tmp, kpicture.im, tmp))
+    
+    kpicture.dimx = kpicture.dimx + 2*thickness
+    kpicture.dimy = kpicture.dimy + 2*thickness
