@@ -1,15 +1,15 @@
+import numpy as np
 from picture import *
 from kpicture import *
 from stamp import *
-#from stencil import *
+from stencil import *
 from componentresolver import *
 
-import numpy as np
 
 
 
 # Set main picture
-k = 1
+k = 3
 base = Picture()
 kbase = kPicture(base, k)
 
@@ -38,11 +38,15 @@ for front_color in range(k):
 
 
 
+######################
+#### Stencil flow ####
+######################
+
 CR = ComponentResolver(kbase)
-for ii in range(k):
-    color = next(iter(CR.components_by_color[-1][0].boundarycolors))
-    
-    stencil = Stencil(CR.base, CR.base.colors[color])
-    stencil.show()
-    
-    CR.color_to_mask(color)
+CR.simplify()
+
+stencils = []
+while CR.num_components():
+    stencils.append(Stencil(CR.stencil_component, CR.next_boundary_color()))
+    stencils[-1].show()
+    CR.grow()
