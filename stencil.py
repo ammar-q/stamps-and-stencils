@@ -10,13 +10,12 @@ class Stencil:
         self.dimx = component.base.dimx
         self.dimy = component.base.dimy
         
-    def show(self):
+    def save(self, path):
         canvas = np.zeros((self.dimx, self.dimy))
         for e in self.elements:
             canvas[e] = 1
-        print(canvas)
         colors = np.vstack([self.spray_color, np.array([255,0,0])])
-        Image.fromarray(colors[canvas.astype('uint8')].astype('uint8'), 'RGB').show()
+        Image.fromarray(colors[canvas.astype('uint8')].astype('uint8'), 'RGB').save(path)
     
     
     def apply(self, picture, color, startx = 0, starty = 0):

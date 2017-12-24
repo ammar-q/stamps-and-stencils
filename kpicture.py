@@ -25,6 +25,10 @@ class kPicture:
         image = Image.fromarray(self.colors[self.im].astype('uint8'), 'RGB')
         image.show()
     
+    def save(self, path):
+        image = Image.fromarray(self.colors[self.im].astype('uint8'), 'RGB')
+        image.save(path)
+    
     def im_data(self):
         return np.array(self.im).reshape(self.dimx*self.dimy, -1)
 

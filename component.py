@@ -13,12 +13,11 @@ class Component:
         visited = {}
         while len(queue):
             curx, cury = queue.popleft()
-            print("{}, {}".format(curx, cury))
             if 0 <= curx < self.base.dimx and 0 <= cury < self.base.dimy and not (curx, cury) in visited:
                 visited[(curx, cury)] = True
                 if self.base[curx][cury] == self.color:
                     self.elements.add((curx, cury))
-                    queue.extend([(curx + ii, cury + jj) for ii in range(-1,2) for jj in range(-1, 2) if not (curx + ii, cury + jj) in visited])
+                    queue.extend([(curx + ii, cury + jj) for ii,jj in [(0,1), (0,-1), (1,0), (-1,0)] if not (curx + ii, cury + jj) in visited])
                 else:
                     self.boundary.add((curx, cury))
 
